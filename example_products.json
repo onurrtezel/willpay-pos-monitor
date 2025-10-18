@@ -1,0 +1,199 @@
+{
+  "store_info": {
+    "name": "Granny's Waffle",
+    "currency": "TRY",
+    "tax_rate": 0.18
+  },
+  "categories": {
+    "Waffle": {
+      "display_name": "🧇 Waffle",
+      "items": [
+        {
+          "id": "W001",
+          "name": "Çikolatalı Waffle",
+          "price": 35.00,
+          "emoji": "🍫",
+          "description": "Belçika çikolatası ve taze waffle"
+        },
+        {
+          "id": "W002",
+          "name": "Muzlu Waffle",
+          "price": 30.00,
+          "emoji": "🍌",
+          "description": "Taze muz dilimleri ve bal"
+        },
+        {
+          "id": "W003",
+          "name": "Çilekli Waffle",
+          "price": 32.00,
+          "emoji": "🍓",
+          "description": "Taze çilek ve çırpılmış krema"
+        },
+        {
+          "id": "W004",
+          "name": "Karamelli Waffle",
+          "price": 33.00,
+          "emoji": "🍯",
+          "description": "Ev yapımı karamel sos"
+        },
+        {
+          "id": "W005",
+          "name": "Fındıklı Waffle",
+          "price": 36.00,
+          "emoji": "🌰",
+          "description": "Kavrulmuş fındık ve nutella"
+        }
+      ]
+    },
+    "Smoothie": {
+      "display_name": "🥤 Smoothie",
+      "items": [
+        {
+          "id": "S001",
+          "name": "Karışık Smoothie",
+          "price": 25.00,
+          "emoji": "🥤",
+          "description": "Muz, çilek ve yaban mersini"
+        },
+        {
+          "id": "S002",
+          "name": "Çilekli Smoothie",
+          "price": 22.00,
+          "emoji": "🍓",
+          "description": "Taze çilek ve yoğurt"
+        },
+        {
+          "id": "S003",
+          "name": "Mango Smoothie",
+          "price": 28.00,
+          "emoji": "🥭",
+          "description": "Taze mango ve hindistan cevizi"
+        },
+        {
+          "id": "S004",
+          "name": "Yaban Mersini Smoothie",
+          "price": 26.00,
+          "emoji": "🫐",
+          "description": "Yaban mersini ve antioxidant"
+        },
+        {
+          "id": "S005",
+          "name": "Yeşil Smoothie",
+          "price": 24.00,
+          "emoji": "🥬",
+          "description": "Ispanak, elma ve limon"
+        }
+      ]
+    },
+    "Kahve": {
+      "display_name": "☕ Kahve",
+      "items": [
+        {
+          "id": "C001",
+          "name": "Türk Kahvesi",
+          "price": 15.00,
+          "emoji": "☕",
+          "description": "Geleneksel Türk kahvesi"
+        },
+        {
+          "id": "C002",
+          "name": "Espresso",
+          "price": 18.00,
+          "emoji": "☕",
+          "description": "İtalyan espresso"
+        },
+        {
+          "id": "C003",
+          "name": "Cappuccino",
+          "price": 20.00,
+          "emoji": "☕",
+          "description": "Espresso, süt ve süt köpüğü"
+        },
+        {
+          "id": "C004",
+          "name": "Latte",
+          "price": 22.00,
+          "emoji": "☕",
+          "description": "Espresso ve bol sütlü kahve"
+        },
+        {
+          "id": "C005",
+          "name": "Americano",
+          "price": 16.00,
+          "emoji": "☕",
+          "description": "Espresso ve sıcak su"
+        },
+        {
+          "id": "C006",
+          "name": "Mocha",
+          "price": 24.00,
+          "emoji": "☕",
+          "description": "Espresso, çikolata ve süt"
+        }
+      ]
+    },
+    "Ekstralar": {
+      "display_name": "🍰 Ekstralar",
+      "items": [
+        {
+          "id": "E001",
+          "name": "Çırpılmış Krema",
+          "price": 5.00,
+          "emoji": "🍦",
+          "description": "Ekstra çırpılmış krema"
+        },
+        {
+          "id": "E002",
+          "name": "Dondurma",
+          "price": 8.00,
+          "emoji": "🍨",
+          "description": "Vanilya dondurma topu"
+        },
+        {
+          "id": "E003",
+          "name": "Nutella",
+          "price": 6.00,
+          "emoji": "🍫",
+          "description": "Ekstra Nutella sosu"
+        },
+        {
+          "id": "E004",
+          "name": "Meyve Tabağı",
+          "price": 10.00,
+          "emoji": "🍓",
+          "description": "Taze mevsim meyveleri"
+        }
+      ]
+    }
+  },
+  "sample_receipts": [
+    {
+      "customer_type": "regular",
+      "items": [
+        {"id": "W001", "quantity": 1},
+        {"id": "C003", "quantity": 1}
+      ],
+      "expected_total": 55.00
+    },
+    {
+      "customer_type": "family",
+      "items": [
+        {"id": "W002", "quantity": 2},
+        {"id": "W003", "quantity": 1},
+        {"id": "S001", "quantity": 2},
+        {"id": "C004", "quantity": 1}
+      ],
+      "expected_total": 164.00
+    },
+    {
+      "customer_type": "quick",
+      "items": [
+        {"id": "C001", "quantity": 1},
+        {"id": "W001", "quantity": 1},
+        {"id": "E001", "quantity": 1}
+      ],
+      "expected_total": 55.00
+    }
+  ]
+}
+

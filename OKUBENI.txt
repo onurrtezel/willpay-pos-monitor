@@ -1,0 +1,174 @@
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║       🧇 WillPay POS Monitor - İLK OKUYUN                     ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+🎯 NE VAR BU PAKETTE?
+───────────────────────────────────────────────────────────────
+
+✅ pos_ui.py          → Kendi POS'unuz (PyQt6)
+✅ pos_monitor.py     → Başka POS'tan veri çeker (UI Automation)
+✅ Backend entegre    → WillPay API ile çalışır
+✅ QR otomatik açılır → Müşteri tarar, fiş düşer
+
+
+💡 HANGİSİNİ KULLANMALIYIM?
+───────────────────────────────────────────────────────────────
+
+▶️ BASIT KULLANIM (ÖNERİLEN):
+
+   python pos_ui.py
+   
+   → Kendi POS'unuz açılır
+   → Ürün ekle, ödeme yap, QR aç
+   → BAŞKA PROGRAMA GEREK YOK!
+
+
+▶️ GELİŞMİŞ KULLANIM (Mevcut POS varsa):
+
+   1. Odoo/Loyverse/TouchBistro gibi bir POS kurun
+   2. python pos_monitor.py çalıştırın
+   3. O programdan UI Automation ile veri çeker
+
+
+⚡ HIZLI BAŞLANGIÇ
+───────────────────────────────────────────────────────────────
+
+WINDOWS'TA:
+
+1. Zip'i çıkar: C:\granny's_waffle_QR\
+
+2. Python kur: https://python.org/downloads
+   ✅ "Add Python to PATH" işaretle!
+
+3. CMD aç:
+   cd "C:\granny's_waffle_QR"
+   pip install PyQt6 qrcode Pillow requests
+
+4. Başlat:
+   start_pos.bat
+   
+   VEYA
+   
+   python pos_ui.py
+
+5. HAZIR! 🎉
+
+
+📚 DOKÜMANTASYON
+───────────────────────────────────────────────────────────────
+
+İLK OKUYUN:
+→ BASIT_KULLANIM.md       (En basit yöntem)
+→ BASLA.md                 (Hızlı başlangıç)
+
+DETAYLI BİLGİ:
+→ TAMAMEN_OTOMATIK.md      (Otomatik mod)
+→ OTOMATIK_BASLATMA.md     (Startup kurulum)
+→ EXE_OLUSTURMA.md         (.exe yapma)
+
+SORUN ÇÖZME:
+→ ANTIVIRUS_COZUM.md       (Virüs uyarısı)
+→ WINDOWS_TRANSFER.md      (Transfer rehberi)
+
+
+🚀 OTOMATİK BAŞLATMA
+───────────────────────────────────────────────────────────────
+
+Windows her açıldığında otomatik başlasın mı?
+
+1. start_pos.bat → Sağ tık → Kısayol oluştur
+2. Windows + R → shell:startup → Enter
+3. Kısayolu yapıştır
+4. BITTI!
+
+
+📦 .EXE OLUŞTURMA (Python'suz Çalışma)
+───────────────────────────────────────────────────────────────
+
+Python yüklenmesini istemiyor musunuz?
+
+build_exe.bat çalıştırın
+→ dist\WillPayPOSMonitor.exe oluşur
+→ Çift tıkla çalışır
+→ Python gerektirmez
+
+
+❓ ANTIVIRÜS UYARISI?
+───────────────────────────────────────────────────────────────
+
+Normal! Python + UI Automation şüpheli görünür.
+
+Çözüm:
+→ Windows Security → Exclusions → C:\granny's_waffle_QR ekle
+
+Detay: ANTIVIRUS_COZUM.md
+
+
+🎯 2 KULLANIM SEÇENEĞİ
+───────────────────────────────────────────────────────────────
+
+SEÇ ENEK 1: Kendi POS'umuz (KOLAY)
+───────────────────────────────────
+python pos_ui.py
+
+✅ Tek program
+✅ Direkt backend'e gönderir
+✅ QR otomatik açar
+✅ Başka programa gerek yok
+✅ 5 dakikada hazır
+
+Ödeme indirmek zorunda değilsiniz!
+
+
+SEÇENEK 2: Mevcut POS + Monitor (GELİŞMİŞ)
+───────────────────────────────────────────
+1. Odoo/Loyverse kur
+2. python pos_monitor.py çalıştır
+3. UI Automation ile veri çeker
+
+✅ Gerçek POS programları
+⚠️ Kurulum daha uzun
+⚠️ Odoo/Loyverse indirmek gerekir
+
+
+✅ KONTROL LİSTESİ
+───────────────────────────────────────────────────────────────
+
+Basit Kullanım (pos_ui.py):
+□ Zip çıkarıldı
+□ Python kuruldu
+□ pip install PyQt6 qrcode Pillow requests
+□ python pos_ui.py çalıştırıldı
+□ Pencere açıldı
+□ Ürün ekle → Ödeme → QR açıldı ✅
+
+Gelişmiş Kullanım (pos_monitor.py):
+□ Odoo/Loyverse kuruldu
+□ pip install pywinauto
+□ python pos_monitor.py çalıştırıldı
+□ POS'a bağlandı
+□ İzleme başladı
+□ Ödeme → QR açıldı ✅
+
+
+🎉 SİSTEM HAZIR!
+───────────────────────────────────────────────────────────────
+
+Backend düzeltilince tam çalışacak.
+
+Başarılar! 🧇☕🥤
+
+
+📞 İLETİŞİM
+───────────────────────────────────────────────────────────────
+
+Sorun mu var?
+→ BASIT_KULLANIM.md
+→ ANTIVIRUS_COZUM.md
+→ WINDOWS_TRANSFER.md
+
+Her şey dokümante edildi!
+

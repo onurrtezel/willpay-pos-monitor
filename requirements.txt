@@ -1,0 +1,25 @@
+# WillPay POS System Requirements
+
+# Backend
+Flask==3.0.0
+Flask-CORS==4.0.0
+
+# Frontend UI
+PyQt6==6.6.1
+
+# QR Code Generation
+qrcode==7.4.2
+Pillow==10.1.0
+
+# HTTP Requests
+requests==2.31.0
+
+# UI Automation Testing (Windows only - Desktop apps)
+pywinauto==0.6.8
+
+# QR Display
+Pillow==10.1.0
+
+# EXE Building (Optional - for creating standalone executable)
+pyinstaller==6.3.0
+
