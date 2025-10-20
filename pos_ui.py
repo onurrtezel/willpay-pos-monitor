@@ -799,7 +799,7 @@ class POSMainWindow(QMainWindow):
             
             # QR URL formatı: /receipt/new SADECE parametreler (receiptId YOK!)
             # Landing page bu parametrelerle YENİ fiş oluşturacak
-            qr_url = f"http://192.168.1.103:8000/receipt/new?amount={total_amount}&store={store_encoded}&items={items_encoded}"
+            qr_url = f"http://172.20.10.4:8000/receipt/new?amount={total_amount}&store={store_encoded}&items={items_encoded}"
             
             print(f"🎯 QR URL: {qr_url[:100]}...")
             print(f"🎯 Store: {store_name}")
