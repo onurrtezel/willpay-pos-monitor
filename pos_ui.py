@@ -418,7 +418,7 @@ class POSMainWindow(QMainWindow):
         title_container.setLayout(title_layout)
         layout.addWidget(title_container)
         
-        # Cart items scroll area
+        # Cart items scroll area (Normal mod)
         self.cart_scroll = QScrollArea()
         self.cart_scroll.setWidgetResizable(True)
         self.cart_scroll.setStyleSheet("""
@@ -435,6 +435,19 @@ class POSMainWindow(QMainWindow):
         self.cart_scroll.setWidget(self.cart_items_widget)
         
         layout.addWidget(self.cart_scroll)
+        
+        # QR Display area (hidden by default) - Sepet yerine gösterilecek
+        self.qr_display = QLabel()
+        self.qr_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.qr_display.setStyleSheet("""
+            QLabel {
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+            }
+        """)
+        self.qr_display.hide()  # Başlangıçta gizli
+        layout.addWidget(self.qr_display)
         
         # Total amount (UI Automation accessible) - Modern
         self.total_label = QLabel("Toplam: 0₺")
@@ -636,9 +649,48 @@ class POSMainWindow(QMainWindow):
         """Clear all items from cart"""
         self.cart.clear()
         self.update_cart_display()
+        
+        # QR gösteriliyorsa gizle, sepeti göster
+        self.cart_scroll.show()
+        self.qr_display.hide()
+        self.pay_button.setText("💳 Ödeme Tamamla")
+    
+    def show_qr_in_panel(self, qr_url, total_amount):
+        """Sepet panelinde QR göster"""
+        import qrcode
+        from io import BytesIO
+        
+        # QR kod oluştur
+        qr = qrcode.QRCode(version=1, box_size=10, border=2)
+        qr.add_data(qr_url)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        
+        # QPixmap'e çevir
+        buffer = BytesIO()
+        img.save(buffer, format='PNG')
+        buffer.seek(0)
+        pixmap = QPixmap()
+        pixmap.loadFromData(buffer.read())
+        
+        # QR'ı göster
+        self.qr_display.setPixmap(pixmap.scaled(400, 400, Qt.AspectRatioMode.KeepAspectRatio))
+        
+        # Sepeti gizle, QR'ı göster
+        self.cart_scroll.hide()
+        self.qr_display.show()
+        
+        # Sepeti temizle
+        self.cart.clear()
+        self.total_label.setText(f"✅ QR Hazır: {total_amount}₺")
     
     def complete_payment(self):
-        """Complete payment and show QR popup"""
+        """Complete payment and show QR in panel"""
+        # Eğer buton "Yeni Sipariş" modundaysa, temizle ve normale dön
+        if self.pay_button.text() == "🔄 Yeni Sipariş":
+            self.clear_cart()
+            return
+        
         if not self.cart:
             return
         
@@ -714,20 +766,14 @@ class POSMainWindow(QMainWindow):
             print(f"🎯 Items: {len(self.cart)} adet")
             print(f"💡 Landing page QR parametrelerinden fiş oluşturacak")
             
-            # Show QR popup
-            display_data = {
-                "items": self.cart,
-                "totalAmount": total_amount
-            }
-            dialog = QRPopup(qr_url, display_data, self)
-            dialog.exec()
+            # QR'ı sepet panelinde göster (popup yok!)
+            self.show_qr_in_panel(qr_url, total_amount)
             
-            # Clear cart
-            self.clear_cart()
-            print("✅ QR gösterildi!")
+            print("✅ QR sepet panelinde gösteriliyor!")
             
-            # Re-enable pay button
-            self.pay_button.setText("💳 Ödeme Tamamla")
+            # Re-enable pay button (yeni sipariş için)
+            self.pay_button.setText("🔄 Yeni Sipariş")
+            self.pay_button.setEnabled(True)
             self.is_processing_payment = False
             print("🔓 Payment unlocked")
             
