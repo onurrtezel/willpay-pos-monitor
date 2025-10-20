@@ -529,102 +529,59 @@ class POSMainWindow(QMainWindow):
             ]
         }
         
+        # QR oluştur - Backend'e KAYDETMEDEN!
+        # Landing page parametreleri alıp kendisi backend'e kaydedecek
+        from urllib.parse import quote
+        import json
+        
         try:
-            # Send to WillPay backend
-            print(f"📤 Sending receipt to backend: {BACKEND_URL}/receipts")
-            response = requests.post(
-                f"{BACKEND_URL}/receipts",
-                json=receipt_data,
-                timeout=3  # 3 saniye yeterli (önceden 10 idi)
-            )
+            print(f"📝 QR kod hazırlanıyor (backend'e kaydetmeden)...")
             
-            if response.status_code in [200, 201]:
-                result = response.json()
-                print(f"✅ Receipt created successfully!")
-                
-                # Handle both object and array response formats
-                if isinstance(result, dict):
-                    # Backend returns object (current format)
-                    receipt_id = result.get('id')
-                    print(f"   Receipt ID: {receipt_id}")
-                    print(f"   Store: {result.get('storeName', 'N/A')}")
-                    print(f"   Total: {result.get('totalAmount', 0)}₺")
-                    print(f"   Items: {len(result.get('items', []))} adet")
-                elif isinstance(result, list):
-                    # Fallback: Backend returns array [id, user_id, store_name, ...]
-                    receipt_id = result[0]
-                    print(f"   Receipt ID: {receipt_id}")
-                    print(f"   Store: {result[2]}")
-                    print(f"   Total: {result[4]}₺")
-                else:
-                    print(f"❌ Unexpected response format: {type(result)}")
-                    return
-                
-                # Create QR URL for WillPay
-                # Format: /receipt/new?amount=XX&store=YY&items=ZZ
-                from urllib.parse import quote
-                import json
-                
-                store_name = "Granny's Waffle"
-                
-                # Items array için JSON oluştur
-                items_json = json.dumps([
-                    {
-                        "name": item['name'],
-                        "price": float(item['price']),
-                        "quantity": item['quantity'],
-                        "category": item['category'].lower()
-                    }
-                    for item in self.cart
-                ])
-                
-                # URL parametreleri oluştur
-                store_encoded = quote(store_name)
-                items_encoded = quote(items_json)
-                
-                # QR URL formatı: Query parameters (sizin verdiğiniz format)
-                # http://192.168.1.103:8000/receipt/new?amount=76&receiptId=197&storeName=Granny's Waffle&items=[...]
-                qr_url = f"http://192.168.1.103:8000/receipt/new?amount={total_amount}&receiptId={receipt_id}&storeName={store_encoded}&items={items_encoded}"
-                
-                print(f"🎯 QR Content: {qr_url[:100]}...")
-                print(f"🎯 Receipt ID: {receipt_id}")
-                print(f"🎯 Store: {store_name}")
-                print(f"🎯 Amount: {total_amount}₺")
-                print(f"🎯 Items: {len(self.cart)} adet")
-                print(f"💡 Format: amount&receiptId&storeName&items")
-                
-                # Show QR popup
-                display_data = {
-                    "items": self.cart,
-                    "totalAmount": total_amount
+            store_name = "Granny's Waffle"
+            
+            # Items JSON oluştur
+            items_json = json.dumps([
+                {
+                    "name": item['name'],
+                    "price": float(item['price']),
+                    "quantity": item['quantity'],
+                    "category": item['category'].lower()
                 }
-                dialog = QRPopup(qr_url, display_data, self)
-                dialog.exec()
-                
-                # Clear cart after successful payment
-                self.clear_cart()
-                print("✅ Payment completed successfully!")
-                
-                # Re-enable pay button (will be disabled again since cart is empty)
-                self.pay_button.setText("💳 Ödeme Tamamla")
-                
-                # 🔓 Unlock payment
-                self.is_processing_payment = False
-                print("🔓 Payment unlocked")
-                
-            else:
-                print(f"❌ Error creating receipt: {response.status_code}")
-                print(f"Response: {response.text[:500]}")
-                
-                # Re-enable pay button on error
-                self.pay_button.setEnabled(True)
-                self.pay_button.setText("💳 Ödeme Tamamla")
-                
-                # 🔓 Unlock payment on error
-                self.is_processing_payment = False
-                print("🔓 Payment unlocked (error)")
-                
-        except requests.exceptions.ConnectionError as e:
+                for item in self.cart
+            ])
+            
+            # URL encode
+            store_encoded = quote(store_name)
+            items_encoded = quote(items_json)
+            
+            # QR URL formatı: /receipt/new SADECE parametreler (receiptId YOK!)
+            # Landing page bu parametrelerle YENİ fiş oluşturacak
+            qr_url = f"http://192.168.1.103:8000/receipt/new?amount={total_amount}&store={store_encoded}&items={items_encoded}"
+            
+            print(f"🎯 QR URL: {qr_url[:100]}...")
+            print(f"🎯 Store: {store_name}")
+            print(f"🎯 Amount: {total_amount}₺")
+            print(f"🎯 Items: {len(self.cart)} adet")
+            print(f"💡 Landing page QR parametrelerinden fiş oluşturacak")
+            
+            # Show QR popup
+            display_data = {
+                "items": self.cart,
+                "totalAmount": total_amount
+            }
+            dialog = QRPopup(qr_url, display_data, self)
+            dialog.exec()
+            
+            # Clear cart
+            self.clear_cart()
+            print("✅ QR gösterildi!")
+            
+            # Re-enable pay button
+            self.pay_button.setText("💳 Ödeme Tamamla")
+            self.is_processing_payment = False
+            print("🔓 Payment unlocked")
+            
+        except Exception as e:
             print(f"❌ Backend bağlantı hatası!")
             print(f"💡 Backend çalışmıyor: {BACKEND_URL}")
             print(f"   Fiş kaydedilemedi ama devam edebilirsiniz")
