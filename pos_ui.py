@@ -455,8 +455,8 @@ class POSMainWindow(QMainWindow):
         """)
         qr_display_layout = QVBoxLayout()
         qr_display_layout.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)  # Yukarıda sabit
-        qr_display_layout.setContentsMargins(0, 20, 0, 0)  # Üstten 20px padding
-        qr_display_layout.setSpacing(10)  # Mesaj ile QR arası 10px
+        qr_display_layout.setContentsMargins(0, 0, 0, 0)  # Padding yok - Sepetim yazısının hemen altında
+        qr_display_layout.setSpacing(5)  # Mesaj ile QR arası minimal
         
         # QR mesajı
         self.qr_message = QLabel("📱 QR Kodu Taratın")
@@ -499,7 +499,7 @@ class POSMainWindow(QMainWindow):
         
         qr_display_layout.addWidget(self.qr_message)
         qr_display_layout.addWidget(qr_white_bg)
-        qr_display_layout.addStretch()  # Alt boşluk - QR yukarıda sabit kalacak
+        # addStretch kaldırıldı - QR Sepetim yazısının hemen altında
         
         self.qr_display_container.setLayout(qr_display_layout)
         self.qr_display_container.hide()  # Başlangıçta gizli
