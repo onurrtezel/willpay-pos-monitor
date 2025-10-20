@@ -403,7 +403,7 @@ class POSMainWindow(QMainWindow):
         layout.setContentsMargins(25, 25, 25, 25)
         layout.setSpacing(20)
         
-        # Title - Modern header
+        # Title - Modern header (sabit boyut)
         title_container = QFrame()
         title_container.setStyleSheet("""
             QFrame {
@@ -412,6 +412,8 @@ class POSMainWindow(QMainWindow):
                 padding: 15px;
             }
         """)
+        title_container.setFixedHeight(60)  # Sabit yükseklik
+        title_container.setMaximumHeight(60)  # Maksimum yükseklik
         title_layout = QVBoxLayout()
         
         title = QLabel("🛒 Sepetim")
@@ -531,6 +533,8 @@ class POSMainWindow(QMainWindow):
         self.qr_display_container.setLayout(qr_display_layout)
         self.qr_display_container.hide()  # Başlangıçta gizli
         self.qr_display_container.setFixedSize(600, 600)  # Sabit boyut - hareket etmesin
+        self.qr_display_container.setMaximumSize(600, 600)  # Maksimum boyut
+        self.qr_display_container.setMinimumSize(600, 600)  # Minimum boyut
         layout.addWidget(self.qr_display_container, 0)  # Stretch factor 0 - sabit boyut
         
         # Total amount (UI Automation accessible) - Modern
