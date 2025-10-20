@@ -1,0 +1,70 @@
+════════════════════════════════════════════════════════════════
+  GITHUB'A YÜKLEME - KOPYALA YAPIŞTIR KOMUTLARI
+════════════════════════════════════════════════════════════════
+
+ADIM 1: GitHub'da Repo Oluştur (Web'de)
+────────────────────────────────────────────────────────────────
+
+1. Bu linki aç:
+   https://github.com/new
+
+2. Doldur:
+   Repository name: willpay-pos-monitor
+   Description: WillPay POS Monitor - UI Automation
+   Public: ✅ İŞARETLE
+   
+3. "Create repository" tıkla
+
+
+ADIM 2: Terminal'de Bu Komutları Çalıştır
+────────────────────────────────────────────────────────────────
+
+Terminal'i açın ve sırayla yapıştırın:
+
+
+# 1. Dizine git
+cd '/Users/onurtezel/granny'"'"'s_waffle_QR'
+
+
+# 2. Remote ekle (kullanıcı adınızı değiştirin!)
+git remote add origin https://github.com/onurtezel/willpay-pos-monitor.git
+
+
+# 3. Branch ayarla
+git branch -M main
+
+
+# 4. Push et
+git push -u origin main
+
+
+ADIM 3: Şifre İsterse
+────────────────────────────────────────────────────────────────
+
+Username: onurtezel
+Password: GitHub Personal Access Token (şifre DEĞİL!)
+
+
+Token yoksa oluştur:
+1. https://github.com/settings/tokens
+2. "Generate new token (classic)"
+3. ✅ repo seç
+4. "Generate token"
+5. Kopyala (bir daha gösterilmez!)
+6. Push sırasında yapıştır
+
+
+ADIM 4: Başarı!
+────────────────────────────────────────────────────────────────
+
+✅ Push başarılı olunca:
+
+https://github.com/onurtezel/willpay-pos-monitor
+
+Repo public olarak görünür!
+
+
+════════════════════════════════════════════════════════════════
+  HEPSİ BU KADAR! 4 ADIM
+════════════════════════════════════════════════════════════════
+

@@ -1,0 +1,47 @@
+════════════════════════════════════════════════════════════════
+  SON ADIM - BU KOMUTU ÇALIŞTIRIN
+════════════════════════════════════════════════════════════════
+
+Terminal'de bu komutu çalıştırın:
+
+cd '/Users/onurtezel/granny'"'"'s_waffle_QR' && git push -u origin main
+
+
+ŞİFRE İSTERSE:
+────────────────────────────────────────────────────────────────
+
+Username: onurrtezel
+Password: GitHub Personal Access Token
+
+
+TOKEN OLUŞTURMA (Gerekirse):
+────────────────────────────────────────────────────────────────
+
+1. https://github.com/settings/tokens
+2. "Generate new token (classic)"
+3. Note: "WillPay POS"
+4. ✅ repo işaretle
+5. "Generate token"
+6. Token'ı kopyala
+7. Push sırasında yapıştır
+
+
+BAŞARI SONRASI:
+────────────────────────────────────────────────────────────────
+
+✅ Repo linki:
+   https://github.com/onurrtezel/willpay-pos-monitor
+
+
+CLONE (Başkaları İçin):
+────────────────────────────────────────────────────────────────
+
+Windows'ta:
+git clone https://github.com/onurrtezel/willpay-pos-monitor.git
+
+
+════════════════════════════════════════════════════════════════
+  SADECE BU KOMUTU ÇALIŞTIRIN:
+  git push -u origin main
+════════════════════════════════════════════════════════════════
+

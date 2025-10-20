@@ -38,8 +38,8 @@ PRODUCTS = {
 }
 
 # WillPay Backend Configuration
-BACKEND_URL = "http://192.168.1.103:8000"  # Mevcut WillPay Backend
-# BACKEND_URL = "http://localhost:8000"  # Localhost için
+BACKEND_URL = "http://localhost:8000"  # Backend'e istek için
+QR_BASE_URL = "http://192.168.1.103:8000"  # QR kod için (Backend - /receipt/new endpoint)
 
 
 class QRPopup(QDialog):
@@ -535,7 +535,7 @@ class POSMainWindow(QMainWindow):
             response = requests.post(
                 f"{BACKEND_URL}/receipts",
                 json=receipt_data,
-                timeout=10
+                timeout=3  # 3 saniye yeterli (önceden 10 idi)
             )
             
             if response.status_code in [200, 201]:
@@ -582,8 +582,9 @@ class POSMainWindow(QMainWindow):
                 store_encoded = quote(store_name)
                 items_encoded = quote(items_json)
                 
-                # QR URL formatı: http://192.168.1.103:8000/receipt/new?amount=...
-                qr_url = f"http://192.168.1.103:8000/receipt/new?amount={total_amount}&store={store_encoded}&items={items_encoded}"
+                # QR URL formatı: /receipt/new endpoint (sizin verdiğiniz format)
+                # Örnek: http://192.168.1.103:8000/receipt/new?amount=25&store=Test+Market
+                qr_url = f"{QR_BASE_URL}/receipt/new?amount={total_amount}&store={store_encoded}&items={items_encoded}"
                 
                 print(f"🎯 QR URL: {qr_url[:100]}...")
                 print(f"🎯 Receipt ID: {receipt_id}")
@@ -622,10 +623,22 @@ class POSMainWindow(QMainWindow):
                 self.is_processing_payment = False
                 print("🔓 Payment unlocked (error)")
                 
-        except requests.exceptions.ConnectionError:
-            print(f"❌ Backend connection error. Make sure backend is running on {BACKEND_URL}")
-            print("💡 Check if backend is accessible:")
-            print(f"   curl {BACKEND_URL}/health")
+        except requests.exceptions.ConnectionError as e:
+            print(f"❌ Backend bağlantı hatası!")
+            print(f"💡 Backend çalışmıyor: {BACKEND_URL}")
+            print(f"   Fiş kaydedilemedi ama devam edebilirsiniz")
+            
+            # Kullanıcıya bildir
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.warning(
+                self,
+                "Backend Hatası",
+                f"Backend'e bağlanılamadı!\n\n"
+                f"URL: {BACKEND_URL}\n\n"
+                f"Fiş kaydedilemedi.\n"
+                f"Backend'i kontrol edin.",
+                QMessageBox.StandardButton.Ok
+            )
             
             # Re-enable pay button on error
             self.pay_button.setEnabled(True)
@@ -634,6 +647,24 @@ class POSMainWindow(QMainWindow):
             # 🔓 Unlock payment on error
             self.is_processing_payment = False
             print("🔓 Payment unlocked (connection error)")
+            
+        except requests.exceptions.Timeout:
+            print(f"❌ Backend timeout! 3 saniyede yanıt vermedi")
+            
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.warning(
+                self,
+                "Timeout Hatası",
+                "Backend çok yavaş yanıt veriyor!\n\n"
+                "3 saniyeden uzun sürdü.\n"
+                "Backend'i kontrol edin.",
+                QMessageBox.StandardButton.Ok
+            )
+            
+            self.pay_button.setEnabled(True)
+            self.pay_button.setText("💳 Ödeme Tamamla")
+            self.is_processing_payment = False
+            print("🔓 Payment unlocked (timeout)")
             
         except Exception as e:
             print(f"❌ Error: {str(e)}")

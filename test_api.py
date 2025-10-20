@@ -6,9 +6,9 @@ import requests
 import json
 import time
 
-# WillPay Backend Configuration
-BACKEND_URL = "http://192.168.1.103:8000"  # Mevcut WillPay Backend
-# BACKEND_URL = "http://localhost:8000"  # Localhost için
+# WillPay Backend Configuration  
+BACKEND_URL = "http://localhost:8000"  # Localhost
+# BACKEND_URL = "http://192.168.1.103:8000"  # Network için
 
 def test_health():
     """Test health check endpoint"""
