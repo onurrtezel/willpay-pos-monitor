@@ -498,6 +498,34 @@ class POSMainWindow(QMainWindow):
         qr_white_bg.setLayout(qr_bg_layout)
         
         qr_display_layout.addWidget(qr_white_bg)  # QR direkt - mesaj yok
+        
+        # Yeni Sipariş butonu - QR'ın altında
+        self.new_order_button = QPushButton("🔄 Yeni Sipariş")
+        self.new_order_button.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
+        self.new_order_button.setStyleSheet("""
+            QPushButton {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #4facfe, stop:1 #00f2fe);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-weight: bold;
+                font-size: 14px;
+                padding: 12px 20px;
+                margin: 10px;
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #3d8bfe, stop:1 #00d4fe);
+            }
+            QPushButton:pressed {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #2d7bfe, stop:1 #00c6fe);
+            }
+        """)
+        self.new_order_button.clicked.connect(self.start_new_order)
+        qr_display_layout.addWidget(self.new_order_button)
+        
         # QR Sepetim yazısının hemen altında
         
         self.qr_display_container.setLayout(qr_display_layout)
@@ -710,6 +738,27 @@ class POSMainWindow(QMainWindow):
         self.cart_scroll.show()
         self.qr_display_container.hide()
         self.pay_button.setText("💳 Ödeme Tamamla")
+    
+    def start_new_order(self):
+        """Yeni sipariş başlat - QR'ı gizle, sepeti temizle"""
+        print("🔄 Yeni sipariş başlatılıyor...")
+        
+        # QR'ı gizle, sepeti göster
+        self.qr_display_container.hide()
+        self.cart_scroll.show()
+        
+        # Sepeti temizle
+        self.cart.clear()
+        self.update_cart_display()
+        
+        # Pay button'u sıfırla
+        self.pay_button.setText("💳 Ödeme Tamamla")
+        self.pay_button.setEnabled(True)
+        
+        # Payment lock'u sıfırla
+        self.is_processing_payment = False
+        
+        print("✅ Yeni sipariş hazır!")
     
     def show_qr_in_panel(self, qr_url, total_amount):
         """Sepet panelinde QR göster"""
