@@ -583,8 +583,8 @@ class POSMainWindow(QMainWindow):
                 items_encoded = quote(items_json)
                 
                 # QR URL formatı: Query parameters (sizin verdiğiniz format)
-                # amount=76&receiptId=197&storeName=Granny's Waffle&items=[...]
-                qr_url = f"amount={total_amount}&receiptId={receipt_id}&storeName={store_encoded}&items={items_encoded}"
+                # http://192.168.1.103:8000/receipt/new?amount=76&receiptId=197&storeName=Granny's Waffle&items=[...]
+                qr_url = f"http://192.168.1.103:8000/receipt/new?amount={total_amount}&receiptId={receipt_id}&storeName={store_encoded}&items={items_encoded}"
                 
                 print(f"🎯 QR Content: {qr_url[:100]}...")
                 print(f"🎯 Receipt ID: {receipt_id}")
