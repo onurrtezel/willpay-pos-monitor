@@ -802,10 +802,9 @@ class POSMainWindow(QMainWindow):
             store_encoded = quote(store_name)
             items_encoded = quote(items_json)
             
-            # QR URL formatı: Maksimum basit (kamera için)
-            # IP yerine sadece port - kısa URL
+            # QR URL formatı: Backend uyumlu - tam parametreler
             amount_int = int(total_amount)
-            qr_url = f"http://172.20.10.4:8000/receipt/new?a={amount_int}&s=Grannys"
+            qr_url = f"http://172.20.10.4:8000/receipt/new?amount={amount_int}&store=Grannys"
             
             # QR debug - URL'i yazdır
             print(f"🔍 QR Debug URL: {qr_url}")
