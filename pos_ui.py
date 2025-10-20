@@ -447,12 +447,14 @@ class POSMainWindow(QMainWindow):
             QFrame {
                 background: transparent;
                 border: none;
+                min-width: 600px;
+                min-height: 600px;
             }
         """)
         qr_display_layout = QVBoxLayout()
         qr_display_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        qr_display_layout.setContentsMargins(0, 0, 0, 0)
-        qr_display_layout.setSpacing(10)
+        qr_display_layout.setContentsMargins(20, 20, 20, 20)  # Dış padding
+        qr_display_layout.setSpacing(15)
         
         # QR mesajı
         self.qr_message = QLabel("📱 QR Kodu Taratın")
@@ -465,26 +467,28 @@ class POSMainWindow(QMainWindow):
         """)
         self.qr_message.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        # QR için beyaz arka plan container - ÇOK GENİŞ (kenarlar kesilmesin)
+        # QR için beyaz arka plan container - TAM GÖRÜNEN
         qr_white_bg = QFrame()
         qr_white_bg.setStyleSheet("""
             QFrame {
                 background: white;
                 border-radius: 15px;
-                padding: 50px;
+                padding: 40px;
                 min-width: 500px;
                 min-height: 500px;
+                max-width: 500px;
+                max-height: 500px;
             }
         """)
         qr_bg_layout = QVBoxLayout()
-        qr_bg_layout.setContentsMargins(50, 50, 50, 50)  # Çok bol padding
+        qr_bg_layout.setContentsMargins(40, 40, 40, 40)  # Eşit padding
         qr_bg_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        qr_bg_layout.setSpacing(0)
         
         self.qr_display = QLabel()
         self.qr_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.qr_display.setScaledContents(False)  # Aspect ratio koru
-        self.qr_display.setMinimumSize(400, 400)  # Minimum boyut
-        self.qr_display.setMaximumSize(450, 450)  # Maksimum boyut
+        self.qr_display.setFixedSize(420, 420)  # Sabit boyut - tam kare
         
         qr_bg_layout.addWidget(self.qr_display)
         qr_white_bg.setLayout(qr_bg_layout)
@@ -721,11 +725,11 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - KENARLAR KESİLMESİN (kamera için)
-        # 400x400px = Kenarlar kesilmeden görünen boyut
-        scaled_pixmap = pixmap.scaled(400, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - TAM KARE VE TAM GÖRÜNEN
+        # 420x420px = Tam kare, tüm köşeler görünür
+        scaled_pixmap = pixmap.scaled(420, 420, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(400, 400)  # Kenarlar kesilmeden görünen boyut
+        self.qr_display.setFixedSize(420, 420)  # Tam kare boyut
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
