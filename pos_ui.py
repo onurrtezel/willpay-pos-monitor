@@ -452,7 +452,7 @@ class POSMainWindow(QMainWindow):
             }
         """)
         qr_display_layout = QVBoxLayout()
-        qr_display_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        qr_display_layout.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)  # Üstte sabit
         qr_display_layout.setContentsMargins(20, 20, 20, 20)  # Dış padding
         qr_display_layout.setSpacing(15)
         
@@ -495,11 +495,11 @@ class POSMainWindow(QMainWindow):
         
         qr_display_layout.addWidget(self.qr_message)
         qr_display_layout.addWidget(qr_white_bg)
-        qr_display_layout.addStretch()
+        # addStretch kaldırıldı - QR üstte sabit kalacak
         
         self.qr_display_container.setLayout(qr_display_layout)
         self.qr_display_container.hide()  # Başlangıçta gizli
-        layout.addWidget(self.qr_display_container, 1)  # Stretch factor ekle
+        layout.addWidget(self.qr_display_container, 0)  # Stretch factor 0 - sabit boyut
         
         # Total amount (UI Automation accessible) - Modern
         self.total_label = QLabel("Toplam: 0₺")
