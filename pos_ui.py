@@ -100,11 +100,11 @@ class QRPopup(QDialog):
         qr_label = QLabel()
         qr_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        # Generate QR code - KAMERA İÇİN OPTİMUM
+        # Generate QR code - BASIT VE NET
         qr = qrcode.QRCode(
-            version=None,  # Otomatik versiyon (URL'e göre)
-            error_correction=qrcode.constants.ERROR_CORRECT_H,  # Yüksek hata düzeltme (hasarlı okuma)
-            box_size=10,  # Büyük modüller (kamera net görür)
+            version=1,  # En küçük versiyon (basit)
+            error_correction=qrcode.constants.ERROR_CORRECT_L,  # Düşük (en basit, en az karmaşık)
+            box_size=12,  # Çok büyük modüller
             border=4  # Standart kenarlık
         )
         qr.add_data(qr_url)
@@ -717,11 +717,11 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - BÜYÜK VE NET (kamera için)
-        # 380x380px = Kamera için ideal boyut (çok küçük değil, çok büyük değil)
-        scaled_pixmap = pixmap.scaled(380, 380, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - ÇOK BÜYÜK (kamera için)
+        # 400x400px = Maksimum boyut
+        scaled_pixmap = pixmap.scaled(400, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(380, 380)  # Kamera için ideal boyut
+        self.qr_display.setFixedSize(400, 400)  # Maksimum boyut
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
@@ -803,7 +803,7 @@ class POSMainWindow(QMainWindow):
             store_encoded = quote(store_name)
             items_encoded = quote(items_json)
             
-            # QR URL formatı: Backend uyumlu - tam parametreler
+            # QR URL formatı: Backend uyumlu ama çok kısa
             amount_int = int(total_amount)
             qr_url = f"http://172.20.10.4:8000/receipt/new?amount={amount_int}&store=Grannys"
             
