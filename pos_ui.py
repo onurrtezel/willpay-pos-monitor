@@ -434,7 +434,7 @@ class POSMainWindow(QMainWindow):
         self.cart_items_widget.setLayout(self.cart_items_layout)
         self.cart_scroll.setWidget(self.cart_items_widget)
         
-        layout.addWidget(self.cart_scroll)
+        layout.addWidget(self.cart_scroll, 1)  # Stretch factor - QR ile aynı alan
         
         # QR Display area (hidden by default) - Sepet yerine gösterilecek
         self.qr_display_container = QFrame()
@@ -442,20 +442,30 @@ class POSMainWindow(QMainWindow):
             QFrame {
                 background: white;
                 border-radius: 20px;
-                padding: 30px;
+                padding: 20px;
             }
         """)
         qr_display_layout = QVBoxLayout()
         qr_display_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        qr_display_layout.setContentsMargins(10, 10, 10, 10)
         
         self.qr_display = QLabel()
         self.qr_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.qr_display.setScaledContents(False)  # Aspect ratio koru
         
+        # QR mesajı
+        self.qr_message = QLabel("📱 QR Kodu Taratın")
+        self.qr_message.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
+        self.qr_message.setStyleSheet("color: #667eea; padding: 10px;")
+        self.qr_message.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        qr_display_layout.addWidget(self.qr_message)
         qr_display_layout.addWidget(self.qr_display)
+        qr_display_layout.addStretch()
+        
         self.qr_display_container.setLayout(qr_display_layout)
         self.qr_display_container.hide()  # Başlangıçta gizli
-        layout.addWidget(self.qr_display_container)
+        layout.addWidget(self.qr_display_container, 1)  # Stretch factor ekle
         
         # Total amount (UI Automation accessible) - Modern
         self.total_label = QLabel("Toplam: 0₺")
@@ -681,10 +691,10 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - Orta boy kare
-        scaled_pixmap = pixmap.scaled(320, 320, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - Küçük ve okunabilir
+        scaled_pixmap = pixmap.scaled(250, 250, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(320, 320)  # Kare şekil
+        self.qr_display.setFixedSize(250, 250)  # Kare şekil - daha küçük
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
