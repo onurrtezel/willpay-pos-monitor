@@ -460,17 +460,17 @@ class POSMainWindow(QMainWindow):
         """)
         self.qr_message.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        # QR için beyaz arka plan container
+        # QR için beyaz arka plan container - Geniş
         qr_white_bg = QFrame()
         qr_white_bg.setStyleSheet("""
             QFrame {
                 background: white;
-                border-radius: 12px;
-                padding: 20px;
+                border-radius: 15px;
+                padding: 25px;
             }
         """)
         qr_bg_layout = QVBoxLayout()
-        qr_bg_layout.setContentsMargins(20, 20, 20, 20)
+        qr_bg_layout.setContentsMargins(25, 25, 25, 25)
         qr_bg_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self.qr_display = QLabel()
@@ -712,10 +712,10 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - Kompakt boyut
-        scaled_pixmap = pixmap.scaled(220, 220, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - Geniş alan
+        scaled_pixmap = pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(220, 220)  # Kare şekil - kompakt
+        self.qr_display.setFixedSize(300, 300)  # Kare şekil - geniş
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
