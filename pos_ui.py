@@ -100,8 +100,13 @@ class QRPopup(QDialog):
         qr_label = QLabel()
         qr_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        # Generate QR code
-        qr = qrcode.QRCode(version=1, box_size=10, border=2)
+        # Generate QR code - Yüksek kalite
+        qr = qrcode.QRCode(
+            version=1, 
+            error_correction=qrcode.constants.ERROR_CORRECT_H,  # Yüksek hata düzeltme
+            box_size=12,  # Daha büyük modüller
+            border=4  # Daha kalın kenarlık
+        )
         qr.add_data(qr_url)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
@@ -712,10 +717,10 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - Geniş alan
-        scaled_pixmap = pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - Büyük ve net
+        scaled_pixmap = pixmap.scaled(350, 350, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(300, 300)  # Kare şekil - geniş
+        self.qr_display.setFixedSize(350, 350)  # Kare şekil - büyük ve net
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
