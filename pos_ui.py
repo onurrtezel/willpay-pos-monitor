@@ -465,12 +465,12 @@ class POSMainWindow(QMainWindow):
         qr_white_bg.setStyleSheet("""
             QFrame {
                 background: white;
-                border-radius: 15px;
-                padding: 15px;
+                border-radius: 12px;
+                padding: 20px;
             }
         """)
         qr_bg_layout = QVBoxLayout()
-        qr_bg_layout.setContentsMargins(15, 15, 15, 15)
+        qr_bg_layout.setContentsMargins(20, 20, 20, 20)
         qr_bg_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self.qr_display = QLabel()
