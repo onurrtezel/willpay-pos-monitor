@@ -449,12 +449,14 @@ class POSMainWindow(QMainWindow):
                 border: none;
                 min-width: 600px;
                 min-height: 600px;
+                max-width: 600px;
+                max-height: 600px;
             }
         """)
         qr_display_layout = QVBoxLayout()
-        qr_display_layout.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)  # Üstte sabit
-        qr_display_layout.setContentsMargins(20, 20, 20, 20)  # Dış padding
-        qr_display_layout.setSpacing(15)
+        qr_display_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Tam ortada sabit
+        qr_display_layout.setContentsMargins(0, 0, 0, 0)  # Padding yok
+        qr_display_layout.setSpacing(0)  # Spacing yok
         
         # QR mesajı
         self.qr_message = QLabel("📱 QR Kodu Taratın")
@@ -467,21 +469,21 @@ class POSMainWindow(QMainWindow):
         """)
         self.qr_message.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        # QR için beyaz arka plan container - TAM GÖRÜNEN
+        # QR için beyaz arka plan container - SABİT VE HAREKETSİZ
         qr_white_bg = QFrame()
         qr_white_bg.setStyleSheet("""
             QFrame {
                 background: white;
                 border-radius: 15px;
-                padding: 40px;
-                min-width: 500px;
-                min-height: 500px;
-                max-width: 500px;
-                max-height: 500px;
+                padding: 0px;
+                min-width: 450px;
+                min-height: 450px;
+                max-width: 450px;
+                max-height: 450px;
             }
         """)
         qr_bg_layout = QVBoxLayout()
-        qr_bg_layout.setContentsMargins(40, 40, 40, 40)  # Eşit padding
+        qr_bg_layout.setContentsMargins(15, 15, 15, 15)  # Minimal padding
         qr_bg_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         qr_bg_layout.setSpacing(0)
         
@@ -489,16 +491,19 @@ class POSMainWindow(QMainWindow):
         self.qr_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.qr_display.setScaledContents(False)  # Aspect ratio koru
         self.qr_display.setFixedSize(420, 420)  # Sabit boyut - tam kare
+        self.qr_display.setMinimumSize(420, 420)  # Minimum boyut
+        self.qr_display.setMaximumSize(420, 420)  # Maksimum boyut
         
         qr_bg_layout.addWidget(self.qr_display)
         qr_white_bg.setLayout(qr_bg_layout)
         
         qr_display_layout.addWidget(self.qr_message)
         qr_display_layout.addWidget(qr_white_bg)
-        # addStretch kaldırıldı - QR üstte sabit kalacak
+        # QR tamamen sabit - hiç hareket etmeyecek
         
         self.qr_display_container.setLayout(qr_display_layout)
         self.qr_display_container.hide()  # Başlangıçta gizli
+        self.qr_display_container.setFixedSize(600, 600)  # Sabit boyut - hareket etmesin
         layout.addWidget(self.qr_display_container, 0)  # Stretch factor 0 - sabit boyut
         
         # Total amount (UI Automation accessible) - Modern
