@@ -415,7 +415,7 @@ class POSMainWindow(QMainWindow):
         title_layout = QVBoxLayout()
         
         title = QLabel("🛒 Sepetim")
-        title.setFont(QFont("Segoe UI", 24, QFont.Weight.Bold))
+        title.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
         title.setStyleSheet("color: white;")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_layout.addWidget(title)
@@ -586,10 +586,10 @@ class POSMainWindow(QMainWindow):
         layout.addWidget(self.pay_button)
         
         # Clear cart button - Modern subtle design
-        clear_button = QPushButton("🗑️ Sepeti Temizle")
-        clear_button.setFont(QFont("Segoe UI", 14))
-        clear_button.setFixedHeight(55)
-        clear_button.setStyleSheet("""
+        self.clear_button = QPushButton("🗑️ Sepeti Temizle")
+        self.clear_button.setFont(QFont("Segoe UI", 14))
+        self.clear_button.setFixedHeight(55)
+        self.clear_button.setStyleSheet("""
             QPushButton {
                 background: rgba(231, 76, 60, 0.9);
                 color: white;
@@ -605,8 +605,8 @@ class POSMainWindow(QMainWindow):
                 background: rgba(169, 50, 38, 1);
             }
         """)
-        clear_button.clicked.connect(self.clear_cart)
-        layout.addWidget(clear_button)
+        self.clear_button.clicked.connect(self.clear_cart)
+        layout.addWidget(self.clear_button)
         
         panel.setLayout(layout)
         
@@ -748,6 +748,7 @@ class POSMainWindow(QMainWindow):
         self.cart_scroll.show()
         self.total_label.show()  # Toplam tutarı göster
         self.pay_button.show()   # Ödeme butonunu göster
+        self.clear_button.show() # Sepeti temizle butonunu göster
         
         # Sepeti temizle
         self.cart.clear()
@@ -791,7 +792,7 @@ class POSMainWindow(QMainWindow):
         self.qr_display_container.show()
         self.total_label.hide()  # Toplam tutarı gizle
         self.pay_button.hide()   # Ödeme butonunu gizle
-        # Clear button zaten cart_scroll içinde, o da gizlendi
+        self.clear_button.hide() # Sepeti temizle butonunu gizle
         
         # Sepeti temizle
         self.cart.clear()
