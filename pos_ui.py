@@ -100,11 +100,11 @@ class QRPopup(QDialog):
         qr_label = QLabel()
         qr_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        # Generate QR code - Kamera için optimize
+        # Generate QR code - KAMERA İÇİN OPTİMUM
         qr = qrcode.QRCode(
-            version=1,  # Sabit küçük versiyon
-            error_correction=qrcode.constants.ERROR_CORRECT_M,  # Orta hata düzeltme
-            box_size=8,  # Daha küçük modüller (daha net)
+            version=None,  # Otomatik versiyon (URL'e göre)
+            error_correction=qrcode.constants.ERROR_CORRECT_H,  # Yüksek hata düzeltme (hasarlı okuma)
+            box_size=10,  # Büyük modüller (kamera net görür)
             border=4  # Standart kenarlık
         )
         qr.add_data(qr_url)
@@ -717,10 +717,11 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - Orta boyut, net (kamera için ideal)
-        scaled_pixmap = pixmap.scaled(320, 320, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - BÜYÜK VE NET (kamera için)
+        # 380x380px = Kamera için ideal boyut (çok küçük değil, çok büyük değil)
+        scaled_pixmap = pixmap.scaled(380, 380, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(320, 320)  # Orta kare boyut - kamera için ideal
+        self.qr_display.setFixedSize(380, 380)  # Kamera için ideal boyut
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
