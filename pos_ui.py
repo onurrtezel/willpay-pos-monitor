@@ -882,7 +882,7 @@ class POSMainWindow(QMainWindow):
             
             # QR URL formatı: Backend uyumlu - tutar, mağaza ve ürünler
             amount_int = int(total_amount)
-            qr_url = f"http://172.20.10.4:8000/receipt/new?amount={amount_int}&store={store_encoded}&items={items_encoded}"
+            qr_url = f"http://localhost:8000/receipt/new?amount={amount_int}&store={store_encoded}&items={items_encoded}"
             
             # QR debug - URL'i yazdır
             print(f"🔍 QR Debug URL: {qr_url}")
