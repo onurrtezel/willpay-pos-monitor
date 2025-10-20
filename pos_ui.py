@@ -39,7 +39,7 @@ PRODUCTS = {
 
 # WillPay Backend Configuration
 BACKEND_URL = "http://localhost:8000"  # Backend'e istek için
-QR_BASE_URL = "http://192.168.1.103:8000"  # QR kod için (Backend - /receipt/new endpoint)
+QR_FRONTEND_URL = "http://192.168.1.103:3000"  # QR kod için (Frontend - mevcut fişi göster)
 
 
 class QRPopup(QDialog):
@@ -582,15 +582,16 @@ class POSMainWindow(QMainWindow):
                 store_encoded = quote(store_name)
                 items_encoded = quote(items_json)
                 
-                # QR URL formatı: /receipt/new endpoint (sizin verdiğiniz format)
-                # Örnek: http://192.168.1.103:8000/receipt/new?amount=25&store=Test+Market
-                qr_url = f"{QR_BASE_URL}/receipt/new?amount={total_amount}&store={store_encoded}&items={items_encoded}"
+                # QR URL formatı: Frontend'e receipt ID + parametreler gönder
+                # Frontend bu bilgilerle fişi gösterir (backend'den çeker)
+                qr_url = f"{QR_FRONTEND_URL}/receipt/{receipt_id}?amount={total_amount}&store={store_encoded}"
                 
-                print(f"🎯 QR URL: {qr_url[:100]}...")
+                print(f"🎯 QR URL: {qr_url}")
                 print(f"🎯 Receipt ID: {receipt_id}")
                 print(f"🎯 Store Name: {store_name}")
                 print(f"🎯 Total Amount: {total_amount}₺")
                 print(f"🎯 Items Count: {len(self.cart)}")
+                print(f"💡 Fiş backend'de kayıtlı (ID: {receipt_id}), QR parametrelerle birlikte")
                 
                 # Show QR popup
                 display_data = {
