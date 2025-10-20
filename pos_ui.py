@@ -100,11 +100,11 @@ class QRPopup(QDialog):
         qr_label = QLabel()
         qr_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        # Generate QR code - Standart ve basit (kamera için)
+        # Generate QR code - Kamera için optimize
         qr = qrcode.QRCode(
             version=1,  # Sabit küçük versiyon
-            error_correction=qrcode.constants.ERROR_CORRECT_L,  # En düşük (en basit)
-            box_size=10,  # Orta boyut modüller
+            error_correction=qrcode.constants.ERROR_CORRECT_M,  # Orta hata düzeltme
+            box_size=8,  # Daha küçük modüller (daha net)
             border=4  # Standart kenarlık
         )
         qr.add_data(qr_url)
@@ -717,10 +717,10 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - Standart boyut (kamera için)
-        scaled_pixmap = pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - Orta boyut, net (kamera için ideal)
+        scaled_pixmap = pixmap.scaled(320, 320, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(300, 300)  # Standart kare boyut
+        self.qr_display.setFixedSize(320, 320)  # Orta kare boyut - kamera için ideal
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
@@ -802,9 +802,10 @@ class POSMainWindow(QMainWindow):
             store_encoded = quote(store_name)
             items_encoded = quote(items_json)
             
-            # QR URL formatı: Çok basit test URL
-            # Sadece temel bilgiler
-            qr_url = f"http://172.20.10.4:8000/receipt/new?amount={int(total_amount)}&store=Grannys"
+            # QR URL formatı: Maksimum basit (kamera için)
+            # IP yerine sadece port - kısa URL
+            amount_int = int(total_amount)
+            qr_url = f"http://172.20.10.4:8000/receipt/new?a={amount_int}&s=Grannys"
             
             # QR debug - URL'i yazdır
             print(f"🔍 QR Debug URL: {qr_url}")
