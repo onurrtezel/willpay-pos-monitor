@@ -712,10 +712,10 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - Net ve temiz
-        scaled_pixmap = pixmap.scaled(280, 280, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - Kompakt boyut
+        scaled_pixmap = pixmap.scaled(220, 220, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(280, 280)  # Kare şekil
+        self.qr_display.setFixedSize(220, 220)  # Kare şekil - kompakt
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
