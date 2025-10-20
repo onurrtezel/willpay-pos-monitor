@@ -798,8 +798,8 @@ class POSMainWindow(QMainWindow):
             items_encoded = quote(items_json)
             
             # QR URL formatı: Basit URL (QR okunabilirliği için)
-            # Landing page bu parametrelerle YENİ fiş oluşturacak
-            qr_url = f"http://172.20.10.4:8000/receipt/new?amount={total_amount}&store={store_encoded}&items={items_encoded}"
+            # Sadece temel parametreler - items kaldırıldı (çok uzun)
+            qr_url = f"http://172.20.10.4:8000/receipt/new?amount={total_amount}&store={store_encoded}"
             
             # QR debug - URL'i yazdır
             print(f"🔍 QR Debug URL: {qr_url}")
