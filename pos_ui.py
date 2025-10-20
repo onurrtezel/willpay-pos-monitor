@@ -437,17 +437,25 @@ class POSMainWindow(QMainWindow):
         layout.addWidget(self.cart_scroll)
         
         # QR Display area (hidden by default) - Sepet yerine gösterilecek
-        self.qr_display = QLabel()
-        self.qr_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.qr_display.setStyleSheet("""
-            QLabel {
+        self.qr_display_container = QFrame()
+        self.qr_display_container.setStyleSheet("""
+            QFrame {
                 background: white;
                 border-radius: 20px;
                 padding: 30px;
             }
         """)
-        self.qr_display.hide()  # Başlangıçta gizli
-        layout.addWidget(self.qr_display)
+        qr_display_layout = QVBoxLayout()
+        qr_display_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        self.qr_display = QLabel()
+        self.qr_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.qr_display.setScaledContents(False)  # Aspect ratio koru
+        
+        qr_display_layout.addWidget(self.qr_display)
+        self.qr_display_container.setLayout(qr_display_layout)
+        self.qr_display_container.hide()  # Başlangıçta gizli
+        layout.addWidget(self.qr_display_container)
         
         # Total amount (UI Automation accessible) - Modern
         self.total_label = QLabel("Toplam: 0₺")
@@ -652,7 +660,7 @@ class POSMainWindow(QMainWindow):
         
         # QR gösteriliyorsa gizle, sepeti göster
         self.cart_scroll.show()
-        self.qr_display.hide()
+        self.qr_display_container.hide()
         self.pay_button.setText("💳 Ödeme Tamamla")
     
     def show_qr_in_panel(self, qr_url, total_amount):
@@ -673,12 +681,14 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster
-        self.qr_display.setPixmap(pixmap.scaled(400, 400, Qt.AspectRatioMode.KeepAspectRatio))
+        # QR'ı göster - Büyük ve kare
+        scaled_pixmap = pixmap.scaled(450, 450, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        self.qr_display.setPixmap(scaled_pixmap)
+        self.qr_display.setFixedSize(450, 450)  # Kare şekil
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
-        self.qr_display.show()
+        self.qr_display_container.show()
         
         # Sepeti temizle
         self.cart.clear()
