@@ -102,10 +102,10 @@ class QRPopup(QDialog):
         
         # Generate QR code - Maksimum okunabilirlik
         qr = qrcode.QRCode(
-            version=1, 
-            error_correction=qrcode.constants.ERROR_CORRECT_M,  # Orta hata düzeltme (daha az karmaşık)
-            box_size=15,  # Çok büyük modüller
-            border=6  # Çok kalın kenarlık
+            version=None,  # Otomatik boyut
+            error_correction=qrcode.constants.ERROR_CORRECT_L,  # Düşük hata düzeltme (daha az karmaşık)
+            box_size=20,  # Çok büyük modüller
+            border=4  # Standart kenarlık
         )
         qr.add_data(qr_url)
         qr.make(fit=True)
@@ -717,10 +717,10 @@ class POSMainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        # QR'ı göster - Çok büyük ve net
-        scaled_pixmap = pixmap.scaled(400, 400, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        # QR'ı göster - Kamera için ideal boyut
+        scaled_pixmap = pixmap.scaled(450, 450, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.qr_display.setPixmap(scaled_pixmap)
-        self.qr_display.setFixedSize(400, 400)  # Kare şekil - çok büyük
+        self.qr_display.setFixedSize(450, 450)  # Kare şekil - kamera için ideal
         
         # Sepeti gizle, QR'ı göster
         self.cart_scroll.hide()
@@ -802,9 +802,10 @@ class POSMainWindow(QMainWindow):
             store_encoded = quote(store_name)
             items_encoded = quote(items_json)
             
-            # QR URL formatı: Kısa ama mağaza adı ile
+            # QR URL formatı: Kısa ama mağaza adı ile (kısa domain)
             # Amount + kısa mağaza adı
-            qr_url = f"http://172.20.10.4:8000/receipt/new?amount={total_amount}&store={store_encoded}"
+            store_short = "Grannys"  # Kısa mağaza adı
+            qr_url = f"http://172.20.10.4:8000/receipt/new?amount={total_amount}&store={store_short}"
             
             # QR debug - URL'i yazdır
             print(f"🔍 QR Debug URL: {qr_url}")
