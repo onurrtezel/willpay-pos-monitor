@@ -743,9 +743,11 @@ class POSMainWindow(QMainWindow):
         """Yeni sipariş başlat - QR'ı gizle, sepeti temizle"""
         print("🔄 Yeni sipariş başlatılıyor...")
         
-        # QR'ı gizle, sepeti göster
+        # QR'ı gizle, sepeti göster, butonları geri getir
         self.qr_display_container.hide()
         self.cart_scroll.show()
+        self.total_label.show()  # Toplam tutarı göster
+        self.pay_button.show()   # Ödeme butonunu göster
         
         # Sepeti temizle
         self.cart.clear()
@@ -784,9 +786,12 @@ class POSMainWindow(QMainWindow):
         self.qr_display.setPixmap(scaled_pixmap)
         self.qr_display.setFixedSize(420, 420)  # Tam kare boyut
         
-        # Sepeti gizle, QR'ı göster
+        # Sepeti gizle, QR'ı göster, diğer butonları gizle
         self.cart_scroll.hide()
         self.qr_display_container.show()
+        self.total_label.hide()  # Toplam tutarı gizle
+        self.pay_button.hide()   # Ödeme butonunu gizle
+        # Clear button zaten cart_scroll içinde, o da gizlendi
         
         # Sepeti temizle
         self.cart.clear()
