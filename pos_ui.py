@@ -43,35 +43,62 @@ QR_FRONTEND_URL = "http://192.168.1.103:3000"  # QR kod için (Frontend - mevcut
 
 
 class QRPopup(QDialog):
-    """QR Code popup dialog"""
+    """QR Code popup dialog - Modern design"""
     
     def __init__(self, qr_url, receipt_data, parent=None):
         super().__init__(parent)
         self.setWindowTitle("QR Fiş - Granny's Waffle")
         self.setModal(True)
-        self.resize(500, 700)
+        self.resize(600, 800)
+        
+        # Modern background
+        self.setStyleSheet("""
+            QDialog {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #667eea, stop:1 #764ba2);
+            }
+        """)
         
         layout = QVBoxLayout()
-        layout.setSpacing(20)
-        layout.setContentsMargins(30, 30, 30, 30)
+        layout.setSpacing(25)
+        layout.setContentsMargins(40, 40, 40, 40)
         
-        # Title
-        title = QLabel("✅ Ödeme Tamamlandı!")
-        title.setFont(QFont("Arial", 20, QFont.Weight.Bold))
+        # Title - Big and bold
+        title = QLabel("✅ Ödeme Başarılı!")
+        title.setFont(QFont("Segoe UI", 32, QFont.Weight.Bold))
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setStyleSheet("""
+            color: white;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+        """)
         layout.addWidget(title)
         
-        # Instruction
-        instruction = QLabel("Fişinizi almak için QR kodu okutun")
-        instruction.setFont(QFont("Arial", 12))
+        # Instruction - Bigger text
+        instruction = QLabel("📱 Fişinizi almak için QR kodu okutun")
+        instruction.setFont(QFont("Segoe UI", 16))
         instruction.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        instruction.setStyleSheet("color: #666;")
+        instruction.setStyleSheet("""
+            color: rgba(255, 255, 255, 0.95);
+            padding: 10px;
+            font-weight: 500;
+        """)
         layout.addWidget(instruction)
         
-        # QR Code
+        # QR Code container - Modern white card
+        qr_container = QFrame()
+        qr_container.setStyleSheet("""
+            QFrame {
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+            }
+        """)
+        qr_container_layout = QVBoxLayout()
+        
         qr_label = QLabel()
         qr_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        qr_label.setStyleSheet("background: white; padding: 20px; border-radius: 10px;")
         
         # Generate QR code
         qr = qrcode.QRCode(version=1, box_size=10, border=2)
@@ -86,52 +113,76 @@ class QRPopup(QDialog):
         pixmap = QPixmap()
         pixmap.loadFromData(buffer.read())
         
-        qr_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))
-        layout.addWidget(qr_label)
+        qr_label.setPixmap(pixmap.scaled(350, 350, Qt.AspectRatioMode.KeepAspectRatio))
+        qr_container_layout.addWidget(qr_label)
         
-        # Receipt details
+        qr_container.setLayout(qr_container_layout)
+        layout.addWidget(qr_container)
+        
+        # Receipt details - Modern card
         details_frame = QFrame()
         details_frame.setStyleSheet("""
             QFrame {
-                background: #f5f5f5;
-                border-radius: 10px;
-                padding: 15px;
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 15px;
+                padding: 20px;
             }
         """)
         details_layout = QVBoxLayout()
+        details_layout.setSpacing(10)
         
-        receipt_title = QLabel("📄 Fiş Detayları")
-        receipt_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
+        receipt_title = QLabel("📄 Fiş Özeti")
+        receipt_title.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
+        receipt_title.setStyleSheet("color: #2c3e50; padding-bottom: 10px;")
         details_layout.addWidget(receipt_title)
         
         for item in receipt_data['items']:
-            item_text = f"{item['name']} x{item['quantity']} - {item['price'] * item['quantity']}₺"
+            item_text = f"• {item['name']} ✕ {item['quantity']} = {item['price'] * item['quantity']}₺"
             item_label = QLabel(item_text)
-            item_label.setFont(QFont("Arial", 11))
+            item_label.setFont(QFont("Segoe UI", 13))
+            item_label.setStyleSheet("color: #495057; padding: 5px;")
             details_layout.addWidget(item_label)
         
-        total_label = QLabel(f"\nToplam: {receipt_data['totalAmount']}₺")
-        total_label.setFont(QFont("Arial", 14, QFont.Weight.Bold))
-        total_label.setStyleSheet("color: #2c3e50;")
+        # Separator
+        separator = QFrame()
+        separator.setFrameShape(QFrame.Shape.HLine)
+        separator.setStyleSheet("background: #dee2e6; margin: 10px 0;")
+        details_layout.addWidget(separator)
+        
+        total_label = QLabel(f"Toplam: {receipt_data['totalAmount']}₺")
+        total_label.setFont(QFont("Segoe UI", 20, QFont.Weight.Bold))
+        total_label.setStyleSheet("""
+            color: white;
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #56ab2f, stop:1 #a8e063);
+            padding: 15px;
+            border-radius: 10px;
+        """)
+        total_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         details_layout.addWidget(total_label)
         
         details_frame.setLayout(details_layout)
         layout.addWidget(details_frame)
         
-        # Close button
-        close_btn = QPushButton("Kapat")
-        close_btn.setFont(QFont("Arial", 12))
+        # Close button - Modern large button
+        close_btn = QPushButton("✓ Tamam")
+        close_btn.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
+        close_btn.setFixedHeight(60)
         close_btn.setStyleSheet("""
             QPushButton {
-                background: #3498db;
+                background: rgba(255, 255, 255, 0.25);
                 color: white;
-                border: none;
-                padding: 12px;
-                border-radius: 8px;
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                padding: 15px;
+                border-radius: 12px;
                 font-weight: bold;
             }
             QPushButton:hover {
-                background: #2980b9;
+                background: rgba(255, 255, 255, 0.35);
+                border: 2px solid rgba(255, 255, 255, 0.7);
+            }
+            QPushButton:pressed {
+                background: rgba(255, 255, 255, 0.2);
             }
         """)
         close_btn.clicked.connect(self.accept)
@@ -152,7 +203,15 @@ class POSMainWindow(QMainWindow):
     def init_ui(self):
         """Initialize the user interface"""
         self.setWindowTitle("Granny's Waffle - POS System")
-        self.setGeometry(100, 100, 1200, 800)
+        self.setGeometry(100, 100, 1400, 900)
+        
+        # Modern stil ayarları
+        self.setStyleSheet("""
+            QMainWindow {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #f8f9fa, stop:1 #e9ecef);
+            }
+        """)
         
         # Main widget
         main_widget = QWidget()
@@ -174,15 +233,36 @@ class POSMainWindow(QMainWindow):
     def create_products_panel(self):
         """Create left panel with product categories and items"""
         panel = QFrame()
-        panel.setStyleSheet("background: #ecf0f1;")
+        panel.setStyleSheet("""
+            QFrame {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #ffffff, stop:1 #f8f9fa);
+                border-right: 2px solid #dee2e6;
+            }
+        """)
         layout = QVBoxLayout()
-        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setContentsMargins(25, 25, 25, 25)
+        layout.setSpacing(15)
         
-        # Title
-        title = QLabel("🧇 Granny's Waffle - Ürünler")
-        title.setFont(QFont("Arial", 18, QFont.Weight.Bold))
-        title.setStyleSheet("color: #2c3e50; padding: 10px;")
+        # Title - Modern header
+        title = QLabel("🧇 Granny's Waffle")
+        title.setFont(QFont("Segoe UI", 26, QFont.Weight.Bold))
+        title.setStyleSheet("""
+            color: #2c3e50;
+            padding: 15px;
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #667eea, stop:1 #764ba2);
+            border-radius: 12px;
+            color: white;
+        """)
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
+        
+        # Subtitle
+        subtitle = QLabel("Menü Seçimi")
+        subtitle.setFont(QFont("Segoe UI", 14))
+        subtitle.setStyleSheet("color: #6c757d; padding: 5px 10px;")
+        layout.addWidget(subtitle)
         
         # Scroll area for products
         scroll = QScrollArea()
@@ -213,17 +293,28 @@ class POSMainWindow(QMainWindow):
         frame.setStyleSheet("""
             QFrame {
                 background: white;
-                border-radius: 10px;
-                padding: 15px;
+                border-radius: 15px;
+                padding: 20px;
+                border: 1px solid #e9ecef;
+            }
+            QFrame:hover {
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             }
         """)
         
         layout = QVBoxLayout()
+        layout.setSpacing(12)
         
-        # Category title
+        # Category title - Modern
         title = QLabel(f"📂 {category}")
-        title.setFont(QFont("Arial", 16, QFont.Weight.Bold))
-        title.setStyleSheet("color: #34495e;")
+        title.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
+        title.setStyleSheet("""
+            color: #495057;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        """)
         layout.addWidget(title)
         
         # Products grid
@@ -242,29 +333,36 @@ class POSMainWindow(QMainWindow):
         return frame
     
     def create_product_button(self, product, category):
-        """Create a product button"""
+        """Create a product button - Modern design"""
         btn = QPushButton()
-        btn.setFixedSize(280, 100)
+        btn.setFixedSize(320, 110)
         btn.setStyleSheet("""
             QPushButton {
-                background: #3498db;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #667eea, stop:1 #764ba2);
                 color: white;
                 border: none;
-                border-radius: 10px;
+                border-radius: 12px;
                 text-align: left;
-                padding: 15px;
-                font-size: 14px;
+                padding: 18px;
+                font-size: 15px;
+                font-weight: bold;
             }
             QPushButton:hover {
-                background: #2980b9;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #764ba2, stop:1 #667eea);
+                transform: scale(1.02);
             }
             QPushButton:pressed {
-                background: #21618c;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #5a4a8a, stop:1 #4a5fc0);
             }
         """)
         
-        text = f"{product['emoji']} {product['name']}\n{product['price']}₺"
+        # Emoji ve isim ayrı satırlarda, fiyat vurgulu
+        text = f"{product['emoji']}  {product['name']}\n💰 {product['price']}₺"
         btn.setText(text)
+        btn.setFont(QFont("Segoe UI", 14, QFont.Weight.Bold))
         btn.clicked.connect(lambda: self.add_to_cart(product, category))
         
         return btn
@@ -288,18 +386,37 @@ class POSMainWindow(QMainWindow):
         self.update_cart_display()
     
     def create_cart_panel(self):
-        """Create right panel with cart and checkout"""
+        """Create right panel with cart and checkout - Modern design"""
         panel = QFrame()
-        panel.setStyleSheet("background: #2c3e50;")
+        panel.setStyleSheet("""
+            QFrame {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #1e3c72, stop:1 #2a5298);
+            }
+        """)
         layout = QVBoxLayout()
-        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setContentsMargins(25, 25, 25, 25)
         layout.setSpacing(20)
         
-        # Title
-        title = QLabel("🛒 Sepet")
-        title.setFont(QFont("Arial", 18, QFont.Weight.Bold))
-        title.setStyleSheet("color: white; padding: 10px;")
-        layout.addWidget(title)
+        # Title - Modern header
+        title_container = QFrame()
+        title_container.setStyleSheet("""
+            QFrame {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 15px;
+            }
+        """)
+        title_layout = QVBoxLayout()
+        
+        title = QLabel("🛒 Sepetim")
+        title.setFont(QFont("Segoe UI", 24, QFont.Weight.Bold))
+        title.setStyleSheet("color: white;")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_layout.addWidget(title)
+        
+        title_container.setLayout(title_layout)
+        layout.addWidget(title_container)
         
         # Cart items scroll area
         self.cart_scroll = QScrollArea()
@@ -319,61 +436,76 @@ class POSMainWindow(QMainWindow):
         
         layout.addWidget(self.cart_scroll)
         
-        # Total amount (UI Automation accessible)
+        # Total amount (UI Automation accessible) - Modern
         self.total_label = QLabel("Toplam: 0₺")
         self.total_label.setObjectName("TotalLabel")  # AutomationId
         self.total_label.setAccessibleName("TotalLabel")
-        self.total_label.setFont(QFont("Arial", 24, QFont.Weight.Bold))
+        self.total_label.setFont(QFont("Segoe UI", 32, QFont.Weight.Bold))
         self.total_label.setStyleSheet("""
-            background: #34495e;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+            QLabel {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #f093fb, stop:1 #f5576c);
+                color: white;
+                padding: 25px;
+                border-radius: 15px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+            }
         """)
         self.total_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.total_label)
         
-        # Pay button (UI Automation accessible)
+        # Pay button (UI Automation accessible) - Modern giant button
         self.pay_button = QPushButton("💳 Ödeme Tamamla")
         self.pay_button.setObjectName("PayButton")  # AutomationId
         self.pay_button.setAccessibleName("PayButton")
-        self.pay_button.setFont(QFont("Arial", 16, QFont.Weight.Bold))
-        self.pay_button.setFixedHeight(70)
+        self.pay_button.setFont(QFont("Segoe UI", 20, QFont.Weight.Bold))
+        self.pay_button.setFixedHeight(85)
         self.pay_button.setStyleSheet("""
             QPushButton {
-                background: #27ae60;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #56ab2f, stop:1 #a8e063);
                 color: white;
                 border: none;
-                border-radius: 10px;
+                border-radius: 15px;
                 font-weight: bold;
+                font-size: 20px;
             }
             QPushButton:hover {
-                background: #229954;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #a8e063, stop:1 #56ab2f);
+                padding: 2px;
             }
             QPushButton:pressed {
-                background: #1e8449;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #4a9428, stop:1 #8bc653);
             }
             QPushButton:disabled {
-                background: #7f8c8d;
+                background: #95a5a6;
+                color: #ecf0f1;
             }
         """)
         self.pay_button.clicked.connect(self.complete_payment)
         self.pay_button.setEnabled(False)
         layout.addWidget(self.pay_button)
         
-        # Clear cart button
+        # Clear cart button - Modern subtle design
         clear_button = QPushButton("🗑️ Sepeti Temizle")
-        clear_button.setFont(QFont("Arial", 12))
-        clear_button.setFixedHeight(50)
+        clear_button.setFont(QFont("Segoe UI", 14))
+        clear_button.setFixedHeight(55)
         clear_button.setStyleSheet("""
             QPushButton {
-                background: #e74c3c;
+                background: rgba(231, 76, 60, 0.9);
                 color: white;
-                border: none;
-                border-radius: 8px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 12px;
+                font-weight: 600;
             }
             QPushButton:hover {
-                background: #c0392b;
+                background: rgba(192, 57, 43, 1);
+                border: 2px solid rgba(255, 255, 255, 0.5);
+            }
+            QPushButton:pressed {
+                background: rgba(169, 50, 38, 1);
             }
         """)
         clear_button.clicked.connect(self.clear_cart)
@@ -406,43 +538,54 @@ class POSMainWindow(QMainWindow):
         self.pay_button.setEnabled(len(self.cart) > 0)
     
     def create_cart_item_widget(self, item, index):
-        """Create widget for a cart item with UI Automation support"""
+        """Create widget for a cart item - Modern card design"""
         frame = QFrame()
         frame.setStyleSheet("""
             QFrame {
-                background: #34495e;
-                border-radius: 8px;
-                padding: 10px;
+                background: rgba(255, 255, 255, 0.15);
+                border-radius: 12px;
+                padding: 15px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            QFrame:hover {
+                background: rgba(255, 255, 255, 0.2);
             }
         """)
         
         layout = QVBoxLayout()
-        layout.setSpacing(5)
+        layout.setSpacing(8)
         
-        # Item name (UI Automation accessible)
+        # Item name (UI Automation accessible) - Bigger and bolder
         name_label = QLabel(item['name'])
         name_label.setObjectName(f"receipt_item_{index}_name")
         name_label.setAccessibleName(f"receipt_item_{index}_name")
-        name_label.setFont(QFont("Arial", 12, QFont.Weight.Bold))
-        name_label.setStyleSheet("color: white;")
+        name_label.setFont(QFont("Segoe UI", 15, QFont.Weight.Bold))
+        name_label.setStyleSheet("color: white; padding: 2px;")
         layout.addWidget(name_label)
         
-        # Price and quantity (UI Automation accessible)
+        # Price and quantity (UI Automation accessible) - Modern info row
         info_layout = QHBoxLayout()
         
         price_label = QLabel(f"{item['price']}₺")
         price_label.setObjectName(f"receipt_item_{index}_price")
         price_label.setAccessibleName(f"receipt_item_{index}_price")
-        price_label.setStyleSheet("color: #ecf0f1;")
+        price_label.setFont(QFont("Segoe UI", 13))
+        price_label.setStyleSheet("color: rgba(255, 255, 255, 0.9);")
         
-        quantity_label = QLabel(f"x{item['quantity']}")
+        quantity_label = QLabel(f"✕ {item['quantity']}")
         quantity_label.setObjectName(f"receipt_item_{index}_quantity")
         quantity_label.setAccessibleName(f"receipt_item_{index}_quantity")
-        quantity_label.setStyleSheet("color: #ecf0f1;")
+        quantity_label.setFont(QFont("Segoe UI", 13, QFont.Weight.Bold))
+        quantity_label.setStyleSheet("color: rgba(255, 255, 255, 0.9);")
         
         subtotal_label = QLabel(f"{item['price'] * item['quantity']}₺")
-        subtotal_label.setFont(QFont("Arial", 11, QFont.Weight.Bold))
-        subtotal_label.setStyleSheet("color: #2ecc71;")
+        subtotal_label.setFont(QFont("Segoe UI", 15, QFont.Weight.Bold))
+        subtotal_label.setStyleSheet("""
+            color: #a8e063;
+            background: rgba(168, 224, 99, 0.2);
+            padding: 4px 12px;
+            border-radius: 6px;
+        """)
         
         info_layout.addWidget(price_label)
         info_layout.addWidget(quantity_label)
@@ -451,18 +594,25 @@ class POSMainWindow(QMainWindow):
         
         layout.addLayout(info_layout)
         
-        # Remove button
-        remove_btn = QPushButton("❌")
-        remove_btn.setFixedSize(30, 30)
+        # Remove button - Modern circular button
+        remove_btn = QPushButton("✕")
+        remove_btn.setFixedSize(35, 35)
+        remove_btn.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
         remove_btn.setStyleSheet("""
             QPushButton {
-                background: #e74c3c;
+                background: rgba(231, 76, 60, 0.8);
                 color: white;
-                border: none;
-                border-radius: 15px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 17px;
+                font-weight: bold;
             }
             QPushButton:hover {
-                background: #c0392b;
+                background: rgba(231, 76, 60, 1);
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                transform: scale(1.1);
+            }
+            QPushButton:pressed {
+                background: rgba(192, 57, 43, 1);
             }
         """)
         remove_btn.clicked.connect(lambda: self.remove_from_cart(index))
