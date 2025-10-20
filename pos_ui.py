@@ -210,6 +210,9 @@ class POSMainWindow(QMainWindow):
         self.setWindowTitle("Granny's Waffle - POS System")
         self.setGeometry(100, 100, 1400, 900)
         
+        # Tam ekranda aç
+        self.showMaximized()
+        
         # Modern stil ayarları
         self.setStyleSheet("""
             QMainWindow {
@@ -403,22 +406,25 @@ class POSMainWindow(QMainWindow):
         layout.setContentsMargins(25, 25, 25, 25)
         layout.setSpacing(20)
         
-        # Title - Modern header (sabit boyut)
+        # Title - Modern header (kompakt ve sabit)
         title_container = QFrame()
         title_container.setStyleSheet("""
             QFrame {
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 12px;
-                padding: 15px;
+                background: rgba(255, 255, 255, 0.15);
+                border-radius: 10px;
+                padding: 10px;
+                margin: 5px;
             }
         """)
-        title_container.setFixedHeight(60)  # Sabit yükseklik
-        title_container.setMaximumHeight(60)  # Maksimum yükseklik
+        title_container.setFixedHeight(50)  # Daha kompakt
+        title_container.setMaximumHeight(50)  # Maksimum yükseklik
+        title_container.setMinimumHeight(50)  # Minimum yükseklik
         title_layout = QVBoxLayout()
+        title_layout.setContentsMargins(5, 5, 5, 5)  # Minimal padding
         
         title = QLabel("🛒 Sepetim")
-        title.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
-        title.setStyleSheet("color: white;")
+        title.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))  # Biraz küçült
+        title.setStyleSheet("color: white; margin: 0px; padding: 0px;")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_layout.addWidget(title)
         
