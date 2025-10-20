@@ -582,16 +582,16 @@ class POSMainWindow(QMainWindow):
                 store_encoded = quote(store_name)
                 items_encoded = quote(items_json)
                 
-                # QR URL formatı: SADECE receipt ID - Frontend backend'den çeker
-                # Parametreler OLMAMALI (çift fiş oluşturuyor)
-                qr_url = f"{QR_FRONTEND_URL}/receipt/{receipt_id}"
+                # QR URL formatı: Query parameters (sizin verdiğiniz format)
+                # amount=76&receiptId=197&storeName=Granny's Waffle&items=[...]
+                qr_url = f"amount={total_amount}&receiptId={receipt_id}&storeName={store_encoded}&items={items_encoded}"
                 
-                print(f"🎯 QR URL: {qr_url}")
+                print(f"🎯 QR Content: {qr_url[:100]}...")
                 print(f"🎯 Receipt ID: {receipt_id}")
-                print(f"🎯 Store Name: {store_name}")
-                print(f"🎯 Total Amount: {total_amount}₺")
-                print(f"🎯 Items Count: {len(self.cart)}")
-                print(f"💡 Fiş backend'de kayıtlı - Frontend receipt ID ile tüm bilgileri çekecek")
+                print(f"🎯 Store: {store_name}")
+                print(f"🎯 Amount: {total_amount}₺")
+                print(f"🎯 Items: {len(self.cart)} adet")
+                print(f"💡 Format: amount&receiptId&storeName&items")
                 
                 # Show QR popup
                 display_data = {
